@@ -1,0 +1,42 @@
+name: Build Flutter Notes App (Android APK)
+
+on:
+  push:
+    paths:
+      - 'notes/**'
+      - '.github/workflows/flutter-android.yml'
+    branches: [main]  # or master
+  pull_request:
+    paths:
+      - 'notes/**'
+      - '.github/workflows/flutter-android.yml'
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: notes  # 👈 sets working dir to notes/
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.22.1'
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: notes-app-release.apk
+          path: notes/build/app/outputs/flutter-apk/app-release.apk
