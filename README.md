@@ -31,15 +31,15 @@ Now, copy over your app code:
 > You can check your version by running: `flutter --version`
 
 
-#### ⚙️ 7. Setup GitHub Actions to Export APK (WIP)
+#### ⚙️ 7. Setup GitHub Actions to Export APK
 
-Create a workflow file in:
+Already have a workflow file in:
 
 ```
-.github/workflows/<your_project_name>.yml
+.github/workflows/flutter-android.yml
 ```
 
-Paste the following content:
+Do some modifications:
 
 ```yaml
 name: Build Flutter APK
@@ -47,7 +47,7 @@ name: Build Flutter APK
 on:
   push:
     paths:
-      - 'notes/**'
+      - 'notes/**'            <---------------- change path
       - '.github/workflows/**'
     branches: [main]
 
@@ -57,7 +57,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: notes
+        working-directory: notes  <------------- change working dir
 
     steps:
       - name: Checkout repo
@@ -66,7 +66,7 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.32.4'
+          flutter-version: '3.32.4'  <---------- check flutter version
 
       - name: Install dependencies
         run: flutter pub get
@@ -78,7 +78,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: notes-app-release.apk
-          path: notes/build/app/outputs/flutter-apk/app-release.apk
+          path: notes/build/app/outputs/notes/app-release.apk  <----------------- change folder name
 ```
 
 #### 8. Push Your Code to GitHub
